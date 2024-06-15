@@ -5,13 +5,13 @@ import ValuesColumn from "./ValuesColumn";
 const ValueSettings = () => {
   const { values, fetchValues, addValue, updateValues2 } = useValues();
 
-  useEffect(() => {
-    fetchValues();
-  }, []);
+  // useEffect(() => {
+  //   fetchValues();
+  // }, [fetchValues]);
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [values]);
 
   const columns = Object.keys(values);
 

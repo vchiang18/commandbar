@@ -35,13 +35,19 @@ const SettingsDrawer = () => {
         ></label>
         <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
           <li>
-            <a onClick={handleSettings}>Settings</a>
+            <a onClick={handleSettings} href="general-settings">
+              Settings
+            </a>
           </li>
           <li>
-            <a onClick={clearPractices}>Clear Practices</a>
+            <a onClick={clearPractices} href="clear-practices">
+              Clear Practices
+            </a>
           </li>
           <li>
-            <a onClick={handleExport}>Export Practices</a>
+            <a onClick={handleExport} href="export-practices">
+              Export Practices
+            </a>
           </li>
         </ul>
       </div>
