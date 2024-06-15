@@ -13,6 +13,9 @@ import PlayListSort from "./components/PlayListSort";
 import ValueSettings from "./components/ValuesSettings";
 
 function App() {
+  const loggedInUserId = "12345";
+  window.CommandBar.boot(loggedInUserId);
+
   return (
     <BrowserRouter>
       <PracticeProvider>
