@@ -98,7 +98,6 @@ const PlayEntry = () => {
 
   return (
     <div className="p-4">
-      {/* <PracticeHeader /> */}
       <div className="flex flex-wrap items-center justify-center gap-24"></div>
       <div className="flex flex-wrap">
         <div className="p-4 w-full">
