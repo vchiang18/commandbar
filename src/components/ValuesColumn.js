@@ -7,7 +7,7 @@ const ValuesColumn = ({ column, updateValues2, deleteValue2 }) => {
 
   useEffect(() => {
     fetchValues();
-  }, []);
+  }, [fetchValues]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
