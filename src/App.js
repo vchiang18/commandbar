@@ -9,7 +9,6 @@ import Nav from "./components/Nav";
 import ManageCustomValues from "./components/ManageCustomValues";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ExportPractices from "./components/ExportPractices";
-import ValueSettings from "./components/ValuesSettings";
 
 function App() {
   const loggedInUserId = "12345";
@@ -30,7 +29,7 @@ function App() {
                   element={<ManageCustomValues />}
                 />
                 <Route path="/export-practices" element={<ExportPractices />} />
-                <Route path="/test" element={<ValueSettings />} />
+                {/* <Route path="/test" element={<ValueSettings />} /> */}
               </Routes>
             </div>
           </PlayProvider>
