@@ -1,89 +1,18 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { usePractices } from "../context/PracticeContext";
 
-function PlayList() {
+function PlayList({ limit = 0, sortOrder = "asc" }) {
   const { practices } = usePractices();
-  const [sortConfig, setSortConfig] = useState([]);
-
-  const debounce = (func, delay) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        func.apply(this, args);
-      }, delay);
-    };
-  };
-
-  // multiple sort
-  const handleSortChange = useCallback(
-    debounce((key) => {
-      setSortConfig((prevSortConfig) => {
-        console.log("clicked: ", key);
-        console.log("prev sort config: ", prevSortConfig);
-
-        const existingIndex = prevSortConfig.findIndex(
-          (config) => config.key === key
-        );
-        console.log("existing index: ", existingIndex);
-
-        if (existingIndex >= 0) {
-          const newSortConfig = [...prevSortConfig];
-          console.log("initial newSortConfig: ", newSortConfig);
-          newSortConfig[existingIndex].direction =
-            newSortConfig[existingIndex].direction === "asc" ? "desc" : "asc";
-
-          console.log(
-            "updated direction: ",
-            newSortConfig[existingIndex].direction
-          );
-          console.log("updated newSortConfig: ", newSortConfig);
-
-          return newSortConfig;
-        } else {
-          const newSortConfig = [...prevSortConfig, { key, direction: "asc" }];
-          console.log("new sort config: ", newSortConfig);
-          return newSortConfig;
-        }
-      });
-    }, 100),
-    []
-  );
 
   if (practices.length === 0) {
     return <div className="p-4">No practices recorded.</div>;
   }
 
-  const getSortedPractices = (practices) => {
-    console.log(sortConfig);
-    if (sortConfig.length === 0) return practices;
+  const displayedPractices = limit ? practices.slice(-limit) : practices;
 
-    return [...practices].sort((a, b) => {
-      for (const config of sortConfig) {
-        const aValue = a[config.key] ?? "";
-        const bValue = b[config.key] ?? "";
-
-        if (aValue < bValue) return config.direction === "asc" ? -1 : 1;
-        if (aValue > bValue) return config.direction === "asc" ? 1 : -1;
-      }
-      return 0;
-    });
-  };
-
-  const sortedPractices = getSortedPractices(practices);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    if (isNaN(date)) {
-      return "";
-    } else {
-      return date.toLocaleDateString("en-US", {
-        month: "2-digit",
-        day: "2-digit",
-        year: "numeric",
-      });
-    }
-  };
+  const sortedPractices = [...displayedPractices].sort((a, b) =>
+    sortOrder === "asc" ? a.id - b.id : b.id - a.id
+  );
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -98,134 +27,66 @@ function PlayList() {
                 <tr>
                   <th
                     scope="col"
-                    className="py-1.5 px-3 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                  >
-                    #
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-1.5 px-3 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("practiceNo")}
-                  >
-                    Practice No
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-1.5 px-3 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("practiceDate")}
-                  >
-                    Date
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-1.5 px-3 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("period")}
-                  >
-                    Period
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-1.5 px-3 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("practiceType")}
-                  >
-                    Practice Type
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-1.5 px-3 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("situation")}
-                  >
-                    Situation
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-1.5 px-3 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("rep")}
+                    className="py-1.5 px-3 text-left text-xs font-semibold text-gray-500"
                   >
                     Rep
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("offensivePersonnel")}
+                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500"
                   >
                     Offensive Personnel
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("formation")}
+                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500"
                   >
                     Formation
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("formationVariation")}
+                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500"
                   >
                     Formation Variation
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("backfield")}
+                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500"
                   >
                     Backfield
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("motion")}
+                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500"
                   >
                     Motion
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("FIB")}
+                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500"
                   >
                     FIB
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("formationFamily")}
+                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500"
                   >
                     Formation Family
                   </th>
                   <th
                     scope="col"
-                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500 cursor-pointer"
-                    onClick={() => handleSortChange("unbalanced")}
+                    className="px-3 py-1.5 text-left text-xs font-semibold text-gray-500"
                   >
                     Unbalanced
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {sortedPractices.map((practice, index) => (
+                {sortedPractices.map((practice) => (
                   <tr
                     key={practice.id}
                     className="even:bg-gray-50 hover:bg-gray-50"
                   >
-                    <td className="py-1.5 px-3 text-xs font-normal text-gray-900">
-                      {index + 1}
-                    </td>
-                    <td className="py-1.5 px-3 text-xs font-normal text-gray-900">
-                      {practice.practiceNo}
-                    </td>
-                    <td className="py-1.5 px-3 text-xs font-normal text-gray-900">
-                      {formatDate(practice.practiceDate)}
-                    </td>
-                    <td className="py-1.5 px-3 text-xs font-normal text-gray-900">
-                      {practice.period}
-                    </td>
-                    <td className="py-1.5 px-3 text-xs font-normal text-gray-900">
-                      {practice.practiceType}
-                    </td>
-                    <td className="py-1.5 px-3 text-xs font-normal text-gray-900">
-                      {practice.situation}
-                    </td>
                     <td className="py-1.5 px-3 text-xs font-normal text-gray-900">
                       {practice.rep}
                     </td>
@@ -257,9 +118,6 @@ function PlayList() {
                 ))}
               </tbody>
             </table>
-            <div className="mt-2 text-sm">
-              Showing {sortedPractices.length} practices
-            </div>
           </div>
         </div>
       </div>
