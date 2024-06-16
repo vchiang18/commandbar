@@ -6,6 +6,10 @@ import PracticeHeader from "./PracticeHeader";
 const Nav = () => {
   const location = useLocation();
 
+  function productTourNudge() {
+    window.CommandBar.trackEvent("buttonClick", {});
+  }
+
   return (
     <nav className="bg-calBlue p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -31,6 +35,7 @@ const Nav = () => {
               <NavLink
                 to="/play-list"
                 className="text-gray-300 hover:text-white whitespace-nowrap"
+                onClick={productTourNudge}
               >
                 PLAY LIST
               </NavLink>

@@ -9,13 +9,17 @@ import Nav from "./components/Nav";
 import ManageCustomValues from "./components/ManageCustomValues";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ExportPractices from "./components/ExportPractices";
+import useCommandBar from "./useCommandBar";
+
+function CommandBarWrapper() {
+  useCommandBar("12345");
+  return null;
+}
 
 function App() {
-  const loggedInUserId = "12345";
-  window.CommandBar.boot(loggedInUserId);
-
   return (
     <BrowserRouter>
+      <CommandBarWrapper />
       <PracticeProvider>
         <ValuesProvider>
           <PlayProvider>
